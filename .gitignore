@@ -1,0 +1,5 @@
+philo
+build
+.DS_Store
+*.dSYM
+*.wasm
