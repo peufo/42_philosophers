@@ -25,7 +25,7 @@ watch() {
 			info "HEY BRO 👋 $(date)"
 			./sync.sh
 
-			NORM_ERROR=$(sed -e '/.*: OK!/d' <(norminette ./src))
+			NORM_ERROR=$(sed -e '/.*: OK!/d' <(norminette ./philo))
 			if [[ $NORM_ERROR == "" ]] ; then
 				success "\nNORMINETTE OK\n"
 			else
@@ -33,9 +33,9 @@ watch() {
 				echo -e "$NORM_ERROR\n\n\n"
 			fi
 
-			PROG="./philo"
+			PROG="./philo/philo"
 			rm -f "$PROG"
-			make
+			make -C philo
 			if [ ! -f "$PROG" ]; then
 				warning "COMPILATION FAILED"
 			else
@@ -57,7 +57,7 @@ get_state() {
 	else
 		MD5="md5"
 	fi
-	echo $(find -L ./src -type f -name "*.[ch]" -exec $MD5 {} \;)
+	echo $(find -L ./philo -type f -name "*.[ch]" -exec $MD5 {} \;)
 }
 
 watch

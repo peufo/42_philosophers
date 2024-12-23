@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:39:11 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/23 22:51:22 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/23 23:55:22 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,5 @@ int	main(int ac, char **av)
 {
 	(void)ac;
 	(void)av;
-	put_str("YO\n");
+	ft_log("YOYO\n");
 }

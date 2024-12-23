@@ -1,5 +1,4 @@
-philo
+philo/philo
 build
 .DS_Store
 *.dSYM
-*.wasm

@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lib.c                                              :+:      :+:    :+:   */
+/*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/23 22:36:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/23 22:38:08 by jvoisard         ###   ########.fr       */
+/*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
+/*   Updated: 2024/12/23 23:03:10 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#ifndef PHILO_H
+# define PHILO_H
+# include <unistd.h>
+# include <sys/time.h>
+# include <pthread.h>
 
-void	put_str(char *s)
-{
-	while (*s)
-		write(1, s++, 1);
-}
+void	ft_log(char *s);
+
+#endif

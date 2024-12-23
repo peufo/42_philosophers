@@ -1,5 +1,5 @@
 NAME			=	philo
-DIR_SRC			=	./src
+DIR_SRC			=	./
 DIR_BUILD		=	./build
 SOURCES			=	lib.c main.c 
 SOURCES_NAME	=	$(basename $(SOURCES))
