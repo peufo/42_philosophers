@@ -1,10 +1,10 @@
 NAME			=	philo
 DIR_SRC			=	./
 DIR_BUILD		=	./build
-SOURCES			=	lib.c main.c 
+SOURCES			=	ft_atoi.c lib.c main.c 
 SOURCES_NAME	=	$(basename $(SOURCES))
 OBJECTS			=	$(addsuffix .o, $(addprefix $(DIR_BUILD)/, $(SOURCES_NAME)))
-FLAGS			=	-Wall -Wextra -Werror
+FLAGS			=	-Wall -Wextra -Werror -pthread -fsanitize=thread -g
 
 all: $(NAME)
 
