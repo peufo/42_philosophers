@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/28 00:01:32 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/28 00:04:17 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct s_args
 	int	time_to_eat;
 	int	time_to_sleep;
 	int	max_times_eat;
-} t_args;
+}	t_args;
 
 int		ft_is_int(char *str);
 int		ft_atoi(const char *str);
