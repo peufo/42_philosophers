@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:39:11 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/28 02:07:27 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/28 11:35:06 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,19 +49,19 @@ static t_philo	*create_philos(t_args *args)
 		philos[i].index = i + 1;
 		philos[i].args = args;
 		philos[i].state = SLEEP;
+		philos[i].is_fork_used = 0;
 		pthread_mutex_init(&(philos[i].fork_mutex), NULL);
 		pthread_mutex_init(&(philos[i].state_mutex), NULL);
-		philos[i].left = philos - 1;
-		philos[i].right = philos + 1;
-		//if (i == 0)
-		//	philos[i].left += args->nb_philos;
-		//if (i == args->nb_philos - 1)
-		//	philos[i].right = philos;
-		if (pthread_create(&(philos[i].thread), NULL, run_philo, philos + i))
+		philos[i].next = philos + 1;
+		if (i == args->nb_philos - 1)
+			philos[i].next = philos;
+		if (pthread_create(&(philos[i].thread), NULL, run_philo, &(philos[i])))
 			return (terminate(philos, "Thread creation failed"), NULL);
-		pthread_detach(philos[i].thread);
 		i++;
 	}
+	i = 0;
+	while (i < args->nb_philos)
+		pthread_join(philos[i++].thread, NULL);
 	return (philos);
 }
 

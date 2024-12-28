@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/28 02:06:58 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/28 11:34:45 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,20 @@ struct s_philo
 {
 	int				index;
 	pthread_mutex_t	fork_mutex;
+	int				is_fork_used;
 	t_philo_state	state;
 	pthread_mutex_t	state_mutex;
 	pthread_t		thread;
 	t_args			*args;
-	t_philo			*left;
-	t_philo			*right;
+	t_philo			*next;
 };
 
 int		ft_is_int(char *str);
 int		ft_atoi(const char *str);
 int		ft_strlen(char *str);
 void	*run_philo(void *data);
+void	eat(t_philo *philo);
+void	philo_eat(t_philo *philo);
+void	philo_sleep(t_philo *philo);
 
 #endif
