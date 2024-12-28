@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/28 01:08:32 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/28 02:06:58 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@
 
 typedef struct s_args
 {
-	int	nb_philos;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	max_times_eat;
+	int				nb_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				max_times_eat;
+	pthread_mutex_t	mutex;
 }	t_args;
 
 typedef enum e_philo_state
@@ -34,13 +35,18 @@ typedef enum e_philo_state
 	THINK
 }	t_philo_state;
 
-typedef struct s_philo
+typedef struct s_philo	t_philo;
+struct s_philo
 {
 	int				index;
+	pthread_mutex_t	fork_mutex;
 	t_philo_state	state;
-	t_args			*args;
+	pthread_mutex_t	state_mutex;
 	pthread_t		thread;
-}	t_philo;
+	t_args			*args;
+	t_philo			*left;
+	t_philo			*right;
+};
 
 int		ft_is_int(char *str);
 int		ft_atoi(const char *str);

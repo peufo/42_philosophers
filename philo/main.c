@@ -6,17 +6,18 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:39:11 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/28 01:08:18 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/28 02:07:27 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// TODO: CLEANUP philos trhread ???
 static int	terminate(t_philo *philos, char *error)
 {
 	if (philos)
+	{
 		free(philos);
+	}
 	if (!error)
 		return (0);
 	printf("Error: %s\n", error);
@@ -48,8 +49,17 @@ static t_philo	*create_philos(t_args *args)
 		philos[i].index = i + 1;
 		philos[i].args = args;
 		philos[i].state = SLEEP;
+		pthread_mutex_init(&(philos[i].fork_mutex), NULL);
+		pthread_mutex_init(&(philos[i].state_mutex), NULL);
+		philos[i].left = philos - 1;
+		philos[i].right = philos + 1;
+		//if (i == 0)
+		//	philos[i].left += args->nb_philos;
+		//if (i == args->nb_philos - 1)
+		//	philos[i].right = philos;
 		if (pthread_create(&(philos[i].thread), NULL, run_philo, philos + i))
 			return (terminate(philos, "Thread creation failed"), NULL);
+		pthread_detach(philos[i].thread);
 		i++;
 	}
 	return (philos);
@@ -72,6 +82,7 @@ int	main(int ac, char **av)
 	args.time_to_eat = ft_atoi(av[3]);
 	args.time_to_sleep = ft_atoi(av[4]);
 	args.max_times_eat = -1;
+	pthread_mutex_init(&(args.mutex), NULL);
 	if (ac == 6)
 		args.max_times_eat = ft_atoi(av[5]);
 	philos = create_philos(&args);
