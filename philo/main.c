@@ -6,11 +6,22 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:39:11 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/28 00:02:43 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/28 01:08:18 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+// TODO: CLEANUP philos trhread ???
+static int	terminate(t_philo *philos, char *error)
+{
+	if (philos)
+		free(philos);
+	if (!error)
+		return (0);
+	printf("Error: %s\n", error);
+	return (1);
+}
 
 static int	print_args_help(char *error)
 {
@@ -23,9 +34,31 @@ static int	print_args_help(char *error)
 	return (0);
 }
 
+static t_philo	*create_philos(t_args *args)
+{
+	int			i;
+	t_philo		*philos;
+
+	i = 0;
+	philos = malloc(sizeof(*philos) * args->nb_philos);
+	if (!philos)
+		return (terminate(NULL, "Malloc failed"), NULL);
+	while (i < args->nb_philos)
+	{
+		philos[i].index = i + 1;
+		philos[i].args = args;
+		philos[i].state = SLEEP;
+		if (pthread_create(&(philos[i].thread), NULL, run_philo, philos + i))
+			return (terminate(philos, "Thread creation failed"), NULL);
+		i++;
+	}
+	return (philos);
+}
+
 int	main(int ac, char **av)
 {
 	t_args	args;
+	t_philo	*philos;
 	int		i;
 
 	if (ac < 5 || 6 < ac)
@@ -41,5 +74,7 @@ int	main(int ac, char **av)
 	args.max_times_eat = -1;
 	if (ac == 6)
 		args.max_times_eat = ft_atoi(av[5]);
-	printf("YOYO\n");
+	philos = create_philos(&args);
+	if (!philos)
+		return (1);
 }
