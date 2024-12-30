@@ -3,6 +3,7 @@
     "*.astro": "astro",
     "philo.h": "c",
     "time.h": "c",
-    "exception": "c"
+    "exception": "c",
+    "locale": "c"
   }
 }
