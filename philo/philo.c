@@ -6,13 +6,13 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 00:06:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/30 19:19:51 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/30 20:05:54 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	get_time(void)
+int	get_time(void)
 {
 	struct timeval	time;
 
@@ -39,9 +39,8 @@ static	void free_fork(t_philo *philo)
 	pthread_mutex_unlock(&(philo->fork_mutex));
 }
 
-int	await_forks(t_philo *philo)
+static int	await_forks(t_philo *philo)
 {
-	usleep(10000);
 	if (!take_fork(philo))
 		return (1);
 	if (!take_fork(philo->next))
@@ -49,40 +48,57 @@ int	await_forks(t_philo *philo)
 		free_fork(philo);
 		return (1);
 	}
+	usleep(10000);
 	printf("%d %d has taken a fork\n", get_time(), philo->index);
 	printf("%d %d has taken a fork\n", get_time(), philo->index);
 	return (0);
 }
 
-void	philo_eat(t_philo *philo)
+static int	philo_no_eat_duration(t_philo *philo)
+{
+	int	eat_at;
+
+	pthread_mutex_lock(&(philo->eat_at_mutex));
+	eat_at = philo->eat_at;
+	pthread_mutex_unlock(&(philo->eat_at_mutex));
+	return (get_time() - eat_at);
+}
+
+static void	philo_eat(t_philo *philo)
+{
+	printf("%d %d is eating\n", get_time(), philo->index);
+	pthread_mutex_lock(&(philo->eat_at_mutex));
+	philo->eat_at = get_time();
+	pthread_mutex_unlock(&(philo->eat_at_mutex));
+	usleep(philo->args.time_to_eat * 1000);
+}
+
+void	philo_cycle(t_philo *philo)
 {
 	printf("%d %d is thinking\n", get_time(), philo->index);
 	while (await_forks(philo))
-		;
-	printf("%d %d is eating\n", get_time(), philo->index);
-	usleep(philo->args.time_to_eat * 1000);
-	pthread_mutex_lock(&(philo->fork_mutex));
-	philo->is_fork_used = 0;
-	pthread_mutex_unlock(&(philo->fork_mutex));
-	pthread_mutex_lock(&(philo->next->fork_mutex));
-	philo->next->is_fork_used = 0;
-	pthread_mutex_unlock((&philo->next->fork_mutex));
-	philo_sleep(philo);
-}
-
-void	philo_sleep(t_philo *philo)
-{
-	printf("%d %d is sleeping\n", get_time(), philo->index);
-	usleep(philo->args.time_to_sleep * 1000);
+	{
+		if (philo_no_eat_duration(philo) > philo->args.time_to_die)
+		{
+			printf("not_eat_duration %d\n", philo_no_eat_duration(philo));
+			printf("%d %d  is died\n", get_time(), philo->index);
+			return ;
+		}
+	}
 	philo_eat(philo);
+	printf("%d %d is sleeping\n", get_time(), philo->index);
+	free_fork(philo);
+	free_fork(philo->next);
+	usleep(philo->args.time_to_sleep * 1000);
+	//philo_cycle(philo);
 }
 
-//printf("%d %d  is died\n", get_time(), philo->index);
-void	*run_philo(void *data)
+void	*philo_start(void *data)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
-	philo_sleep(philo);
+	philo->eat_at = get_time();
+	philo_cycle(philo);
 	return (NULL);
 }

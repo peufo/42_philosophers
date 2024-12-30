@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/28 12:51:05 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/30 19:44:39 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,7 @@ typedef struct s_args
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				max_times_eat;
-	pthread_mutex_t	mutex;
 }	t_args;
-
-typedef enum e_philo_state
-{
-	SLEEP,
-	EAT,
-	THINK
-}	t_philo_state;
 
 typedef struct s_philo	t_philo;
 struct s_philo
@@ -41,8 +33,8 @@ struct s_philo
 	int				index;
 	pthread_mutex_t	fork_mutex;
 	int				is_fork_used;
-	t_philo_state	state;
-	pthread_mutex_t	state_mutex;
+	int				eat_at;
+	pthread_mutex_t	eat_at_mutex;
 	pthread_t		thread;
 	t_args			args;
 	t_philo			*next;
@@ -51,9 +43,8 @@ struct s_philo
 int		ft_is_int(char *str);
 int		ft_atoi(const char *str);
 int		ft_strlen(char *str);
-void	*run_philo(void *data);
-void	eat(t_philo *philo);
-void	philo_eat(t_philo *philo);
-void	philo_sleep(t_philo *philo);
+void	*philo_start(void *data);
+void	philo_cycle(t_philo *philo);
+int		get_time(void);
 
 #endif

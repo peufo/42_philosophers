@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:39:11 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/30 18:31:19 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/30 20:00:18 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,20 @@ static t_philo	*create_philos(t_args *args)
 	{
 		philos[i].index = i + 1;
 		philos[i].args = *args;
-		philos[i].state = SLEEP;
 		philos[i].is_fork_used = 0;
+		philos[i].eat_at = 0;
 		pthread_mutex_init(&(philos[i].fork_mutex), NULL);
-		pthread_mutex_init(&(philos[i].state_mutex), NULL);
+		pthread_mutex_init(&(philos[i].eat_at_mutex), NULL);
 		philos[i].next = philos + 1;
 		if (i == args->nb_philos - 1)
 			philos[i].next = philos;
-		if (pthread_create(&(philos[i].thread), NULL, run_philo, &(philos[i])))
+		i++;
+	}
+	i = 0;
+	while (i < args->nb_philos)
+	{
+		if (pthread_create(&(philos[i].thread), NULL, philo_start, &(philos[i])))
 			return (terminate(philos, "Thread creation failed"), NULL);
-		//pthread_detach(philos[i].thread);
 		i++;
 	}
 	i = 0;
@@ -81,7 +85,6 @@ int	main(int ac, char **av)
 	args.time_to_eat = ft_atoi(av[3]);
 	args.time_to_sleep = ft_atoi(av[4]);
 	args.max_times_eat = -1;
-	pthread_mutex_init(&(args.mutex), NULL);
 	if (ac == 6)
 		args.max_times_eat = ft_atoi(av[5]);
 	philos = create_philos(&args);
