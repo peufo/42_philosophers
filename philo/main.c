@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:39:11 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/28 11:35:06 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/30 18:31:19 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 static int	terminate(t_philo *philos, char *error)
 {
 	if (philos)
-	{
 		free(philos);
-	}
 	if (!error)
 		return (0);
 	printf("Error: %s\n", error);
@@ -47,7 +45,7 @@ static t_philo	*create_philos(t_args *args)
 	while (i < args->nb_philos)
 	{
 		philos[i].index = i + 1;
-		philos[i].args = args;
+		philos[i].args = *args;
 		philos[i].state = SLEEP;
 		philos[i].is_fork_used = 0;
 		pthread_mutex_init(&(philos[i].fork_mutex), NULL);
@@ -57,6 +55,7 @@ static t_philo	*create_philos(t_args *args)
 			philos[i].next = philos;
 		if (pthread_create(&(philos[i].thread), NULL, run_philo, &(philos[i])))
 			return (terminate(philos, "Thread creation failed"), NULL);
+		//pthread_detach(philos[i].thread);
 		i++;
 	}
 	i = 0;
@@ -88,4 +87,5 @@ int	main(int ac, char **av)
 	philos = create_philos(&args);
 	if (!philos)
 		return (1);
+	terminate(philos, NULL);
 }

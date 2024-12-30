@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/28 11:34:45 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/28 12:51:05 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ struct s_philo
 	t_philo_state	state;
 	pthread_mutex_t	state_mutex;
 	pthread_t		thread;
-	t_args			*args;
+	t_args			args;
 	t_philo			*next;
 };
 
