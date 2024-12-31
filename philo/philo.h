@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/31 02:46:33 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/31 03:10:48 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int		ft_strlen(char *str);
 void	*philo_run(void *data);
 void	philo_cycle(t_philo *philo);
 int		get_time(void);
+int		get_time_relatif(void);
 int		put_state(t_philo *philo, t_philo_state state);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 01:10:18 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/31 03:06:50 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/31 03:13:39 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	put_state(t_philo *philo, t_philo_state state)
 
 	if (state != DIED && philo_check_is_died(philo))
 		return (1);
-	cursor = ft_strcpy("%d %d ", msg);
+	cursor = ft_strcpy("%-6d %d ", msg);
 	if (LOGS_MODE_PRETTY)
 	{
 		i = 0;
@@ -74,7 +74,10 @@ int	put_state(t_philo *philo, t_philo_state state)
 	*(cursor++) = '\n';
 	*(cursor++) = '\0';
 	pthread_mutex_lock(philo->put_lock);
-	printf(msg, get_time(), philo->id);
+	if (LOGS_MODE_PRETTY)
+		printf(msg, get_time_relatif(), philo->id);
+	else
+		printf(msg, get_time(), philo->id);
 	pthread_mutex_unlock(philo->put_lock);
 	return (state == DIED);
 }

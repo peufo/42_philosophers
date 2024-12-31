@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/31 02:40:48 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/31 03:16:54 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,13 @@ int	get_time(void)
 
 	gettimeofday(&time, NULL);
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+}
+
+int	get_time_relatif(void)
+{
+	static int	start;
+
+	if (!start)
+		start = get_time();
+	return (get_time() - start);
 }
