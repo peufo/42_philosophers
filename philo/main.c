@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:39:11 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/30 22:31:24 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/31 02:18:05 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,16 @@
 
 static int	terminate(t_philo *philos, char *error)
 {
+	int	i;
+
 	if (philos)
+	{
+		i = 0;
+		while (i < philos->args.nb_philos)
+			pthread_mutex_destroy(&(philos[i++].fork));
+		pthread_mutex_destroy(philos->put_lock);
 		free(philos);
+	}
 	if (!error)
 		return (0);
 	printf("Error: %s\n", error);
@@ -33,37 +41,50 @@ static int	print_args_help(char *error)
 	return (0);
 }
 
-static t_philo	*create_philos(t_args *args)
+static int	philos_start(t_philo *philos)
 {
-	int			i;
-	t_philo		*philos;
+	int	i;
+	int	nb_philos;
+
+	i = 0;
+	nb_philos = philos->args.nb_philos;
+	while (i < nb_philos)
+	{
+		if (pthread_create(&(philos[i].thread), NULL, philo_run, &(philos[i])))
+			return (terminate(philos, "Thread creation failed"));
+		i++;
+	}
+	i = 0;
+	while (i < nb_philos)
+		pthread_join(philos[i++].thread, NULL);
+	printf("END\n");
+	return (0);
+}
+
+static t_philo	*philos_create(t_args *args)
+{
+	int				i;
+	t_philo			*philos;
+	pthread_mutex_t	put_lock;
 
 	i = 0;
 	philos = malloc(sizeof(*philos) * args->nb_philos);
 	if (!philos)
 		return (terminate(NULL, "Malloc failed"), NULL);
+	pthread_mutex_init(&put_lock, NULL);
 	while (i < args->nb_philos)
 	{
 		philos[i].id = i + 1;
 		philos[i].args = *args;
-		philos[i].is_fork_used = 0;
 		philos[i].eat_at = 0;
-		pthread_mutex_init(&(philos[i].fork_mutex), NULL);
+		philos[i].put_lock = &put_lock;
+		pthread_mutex_init(&(philos[i].fork), NULL);
 		philos[i].next = philos + i + 1;
 		if (i == args->nb_philos - 1)
 			philos[i].next = philos;
 		i++;
 	}
-	i = 0;
-	while (i < args->nb_philos)
-	{
-		if (pthread_create(&(philos[i].thread), NULL, philo_start, &(philos[i])))
-			return (terminate(philos, "Thread creation failed"), NULL);
-		i++;
-	}
-	i = 0;
-	while (i < args->nb_philos)
-		pthread_join(philos[i++].thread, NULL);
+	philos_start(philos);
 	return (philos);
 }
 
@@ -78,7 +99,7 @@ int	main(int ac, char **av)
 	i = 1;
 	while (i < ac)
 		if (!ft_is_int(av[i++]))
-			return (print_args_help("An argument is not an interger"));
+			return (print_args_help("An argument is not an int"));
 	args.nb_philos = ft_atoi(av[1]);
 	args.time_to_die = ft_atoi(av[2]);
 	args.time_to_eat = ft_atoi(av[3]);
@@ -86,10 +107,7 @@ int	main(int ac, char **av)
 	args.max_times_eat = -1;
 	if (ac == 6)
 		args.max_times_eat = ft_atoi(av[5]);
-	args.time_to_priority = args.time_to_die;
-	args.time_to_priority -= args.time_to_eat + args.time_to_sleep;
-	args.time_to_priority /= 3;
-	philos = create_philos(&args);
+	philos = philos_create(&args);
 	if (!philos)
 		return (1);
 	terminate(philos, NULL);

@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/31 00:43:28 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/31 02:46:33 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ typedef struct s_args
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				max_times_eat;
-	int				time_to_priority;
 }	t_args;
 
 typedef enum e_philo_state
@@ -35,17 +34,17 @@ typedef enum e_philo_state
 	EAT,
 	THINK,
 	DIED,
-	TAKE
+	TAKE_FORK
 }	t_philo_state;
-
 
 typedef struct s_philo	t_philo;
 struct s_philo
 {
 	int				id;
-	pthread_mutex_t	fork_mutex;
-	int				is_fork_used;
+	pthread_mutex_t	fork;
+	pthread_mutex_t	*put_lock;
 	int				eat_at;
+	int				is_died;
 	pthread_t		thread;
 	t_args			args;
 	t_philo			*next;
@@ -54,9 +53,9 @@ struct s_philo
 int		ft_is_int(char *str);
 int		ft_atoi(const char *str);
 int		ft_strlen(char *str);
-void	*philo_start(void *data);
+void	*philo_run(void *data);
 void	philo_cycle(t_philo *philo);
 int		get_time(void);
-void	put(t_philo *philo, t_philo_state state);
+int		put_state(t_philo *philo, t_philo_state state);
 
 #endif
