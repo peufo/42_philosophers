@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 00:06:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/31 02:44:55 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/31 02:53:22 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ static int	await_forks(t_philo *philo)
 		return (pthread_mutex_unlock(fork_a), 1);
 	pthread_mutex_lock(fork_b);
 	if (put_state(philo, TAKE_FORK))
-		return (pthread_mutex_unlock(fork_b), 1);
+	{
+		pthread_mutex_unlock(fork_a);
+		pthread_mutex_unlock(fork_b);
+		return (1);
+	}
 	return (0);
 }
 
@@ -43,7 +47,8 @@ void	philo_cycle(t_philo *philo)
 		put_state(philo, THINK);
 		if (await_forks(philo))
 			return ;
-		put_state(philo, EAT);
+		if (put_state(philo, EAT))
+			return ;
 		philo->eat_at = get_time();
 		usleep(philo->args.time_to_eat * 1000);
 		put_state(philo, SLEEP);

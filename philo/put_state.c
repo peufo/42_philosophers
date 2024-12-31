@@ -59,12 +59,11 @@ static char	*set_message(char msg[20], t_philo_state state)
 
 static int	philo_check_is_died(t_philo *philo)
 {
-	if (!philo->is_died)
-	{
-		philo->is_died = get_time() - philo->eat_at > philo->args.time_to_die;
-		if (philo->is_died)
-			return (put_state(philo, DIED));
-	}
+	if (philo->is_died)
+		return (1);
+	philo->is_died = get_time() - philo->eat_at > philo->args.time_to_die;
+	if (philo->is_died)
+		return (put_state(philo, DIED));
 	return (philo->is_died);
 }
 
