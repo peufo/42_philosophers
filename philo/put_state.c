@@ -1,24 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   put_state.c                                              :+:      :+:    :+:   */
+/*   put_state.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 01:10:18 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/31 02:03:54 by jvoisard         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lib.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/23 22:36:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/31 00:47:02 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/31 03:06:50 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +57,7 @@ static int	philo_check_is_died(t_philo *philo)
 
 int	put_state(t_philo *philo, t_philo_state state)
 {
-	char	msg[30];
+	char	msg[100];
 	char	*cursor;
 	int		i;
 
@@ -80,7 +68,7 @@ int	put_state(t_philo *philo, t_philo_state state)
 	{
 		i = 0;
 		while (i++ < philo->id)
-			*(cursor++) = '\t';
+			cursor = ft_strcpy("   ", cursor);
 	}
 	cursor = set_message(cursor, state);
 	*(cursor++) = '\n';

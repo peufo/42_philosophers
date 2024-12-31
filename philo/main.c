@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:39:11 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/31 02:18:05 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/31 03:06:16 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static int	philos_start(t_philo *philos)
 	i = 0;
 	while (i < nb_philos)
 		pthread_join(philos[i++].thread, NULL);
-	printf("END\n");
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 00:06:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/31 02:53:22 by jvoisard         ###   ########.fr       */
+/*   Updated: 2024/12/31 03:05:13 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,5 @@ void	*philo_run(void *data)
 	philo = (t_philo *)data;
 	philo->eat_at = get_time();
 	philo_cycle(philo);
-	printf("END OF %d\n", philo->id);
 	return (NULL);
 }
