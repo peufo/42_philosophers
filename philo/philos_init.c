@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 13:33:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/04 13:40:27 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/04 13:49:54 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int	philos_init(t_args *args)
 		philos[i].id = i + 1;
 		philos[i].args = *args;
 		philos[i].eat_at = 0;
+		philos[i].is_died = 0;
 		philos[i].put_lock = &put_lock;
 		pthread_mutex_init(&(philos[i].fork_left), NULL);
 		i++;
