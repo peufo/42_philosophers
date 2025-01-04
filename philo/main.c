@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:39:11 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/31 03:06:16 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/04 13:25:11 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	terminate(t_philo *philos, char *error)
 	{
 		i = 0;
 		while (i < philos->args.nb_philos)
-			pthread_mutex_destroy(&(philos[i++].fork));
+			pthread_mutex_destroy(&(philos[i++].fork_left));
 		pthread_mutex_destroy(philos->put_lock);
 		free(philos);
 	}
@@ -41,7 +41,7 @@ static int	print_args_help(char *error)
 	return (0);
 }
 
-static int	philos_start(t_philo *philos)
+int	philos_start(t_philo *philos)
 {
 	int	i;
 	int	nb_philos;
@@ -60,37 +60,40 @@ static int	philos_start(t_philo *philos)
 	return (0);
 }
 
-static t_philo	*philos_create(t_args *args)
+int	philos_create(t_args *args)
 {
 	int				i;
 	t_philo			*philos;
 	pthread_mutex_t	put_lock;
 
-	i = 0;
 	philos = malloc(sizeof(*philos) * args->nb_philos);
 	if (!philos)
-		return (terminate(NULL, "Malloc failed"), NULL);
+		return (terminate(NULL, "Malloc failed"));
 	pthread_mutex_init(&put_lock, NULL);
+	i = 0;
 	while (i < args->nb_philos)
 	{
 		philos[i].id = i + 1;
 		philos[i].args = *args;
 		philos[i].eat_at = 0;
 		philos[i].put_lock = &put_lock;
-		pthread_mutex_init(&(philos[i].fork), NULL);
-		philos[i].next = philos + i + 1;
-		if (i == args->nb_philos - 1)
-			philos[i].next = philos;
+		pthread_mutex_init(&(philos[i].fork_left), NULL);
 		i++;
 	}
+	i = 0;
+	while (i < args->nb_philos - 1)
+	{
+		philos[i].fork_right = &(philos[i + 1].fork_left);
+		i++;
+	}
+	philos[args->nb_philos - 1].fork_right = &(philos[0].fork_left);
 	philos_start(philos);
-	return (philos);
+	return (terminate(philos, NULL));
 }
 
 int	main(int ac, char **av)
 {
 	t_args	args;
-	t_philo	*philos;
 	int		i;
 
 	if (ac < 5 || 6 < ac)
@@ -106,8 +109,5 @@ int	main(int ac, char **av)
 	args.max_times_eat = -1;
 	if (ac == 6)
 		args.max_times_eat = ft_atoi(av[5]);
-	philos = philos_create(&args);
-	if (!philos)
-		return (1);
-	terminate(philos, NULL);
+	return (philos_create(&args));
 }

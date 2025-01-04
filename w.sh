@@ -41,7 +41,7 @@ watch() {
 			else
 				success "COMPILATION OK"
 				#valgrind --leak-check=full --track-origins=yes --log-file=leaks.log -s $PROG &
-				$PROG "13" "4000" "1000" "1500" "3" &
+				$PROG "2" "3500" "1000" "1500" "3" &
 				PROG_PID=$!
 				trap 'kill "$PROG_PID" & return' 2
 			fi

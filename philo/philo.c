@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 00:06:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/31 03:05:13 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/04 13:27:34 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ static int	await_forks(t_philo *philo)
 
 	if (philo->id % 2)
 	{
-		fork_a = &(philo->fork);
-		fork_b = &(philo->next->fork);
+		fork_a = &(philo->fork_left);
+		fork_b = philo->fork_right;
 	}
 	else
 	{
-		fork_b = &(philo->fork);
-		fork_a = &(philo->next->fork);
+		fork_b = &(philo->fork_left);
+		fork_a = philo->fork_right;
 	}
 	pthread_mutex_lock(fork_a);
 	if (put_state(philo, TAKE_FORK))
@@ -52,8 +52,8 @@ void	philo_cycle(t_philo *philo)
 		philo->eat_at = get_time();
 		usleep(philo->args.time_to_eat * 1000);
 		put_state(philo, SLEEP);
-		pthread_mutex_unlock(&(philo->fork));
-		pthread_mutex_unlock(&(philo->next->fork));
+		pthread_mutex_unlock(&(philo->fork_left));
+		pthread_mutex_unlock(philo->fork_right);
 		usleep(philo->args.time_to_sleep * 1000);
 		if (!(--philo->args.max_times_eat))
 			return ;

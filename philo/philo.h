@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/31 03:10:48 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/04 13:11:20 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ typedef struct s_philo	t_philo;
 struct s_philo
 {
 	int				id;
-	pthread_mutex_t	fork;
+	pthread_mutex_t	fork_left;
+	pthread_mutex_t	*fork_right;
 	pthread_mutex_t	*put_lock;
 	int				eat_at;
 	int				is_died;
 	pthread_t		thread;
 	t_args			args;
-	t_philo			*next;
 };
 
 int		ft_is_int(char *str);
