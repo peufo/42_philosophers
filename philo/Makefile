@@ -1,7 +1,7 @@
 NAME			=	philo
 DIR_SRC			=	./
 DIR_BUILD		=	./build
-SOURCES			=	ft_atoi.c lib.c main.c philo.c put_state.c 
+SOURCES			=	ft_atoi.c lib.c main.c philo.c philos_init.c put_state.c 
 SOURCES_NAME	=	$(basename $(SOURCES))
 OBJECTS			=	$(addsuffix .o, $(addprefix $(DIR_BUILD)/, $(SOURCES_NAME)))
 FLAGS			=	-Wall -Wextra -Werror -pthread -fsanitize=thread -g

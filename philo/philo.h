@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/04 13:11:20 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/04 13:40:06 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int		ft_is_int(char *str);
 int		ft_atoi(const char *str);
 int		ft_strlen(char *str);
 void	*philo_run(void *data);
+int		philos_init(t_args *args);
 void	philo_cycle(t_philo *philo);
 int		get_time(void);
 int		get_time_relatif(void);
