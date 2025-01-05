@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 13:33:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/05 18:04:11 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/05 18:17:44 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,14 @@ static int	philos_start(t_philo *philos)
 static void	philos_init_values(
 	t_philo *philos,
 	t_args *args,
-	pthread_mutex_t *put_lock
+	pthread_mutex_t *put_lock,
+	t_simu simu
 )
 {
 	int	i;
 	int	nb_philos;
 
+	(void)simu;
 	nb_philos = args->nb_philos;
 	i = 0;
 	while (i < nb_philos)
@@ -81,6 +83,7 @@ static void	philos_init_values(
 		philos[i].eat_at = 0;
 		philos[i].is_died = 0;
 		philos[i].put_lock = put_lock;
+		philos[i].simu = simu;
 		pthread_mutex_init(&(philos[i].fork_left), NULL);
 		if (i < nb_philos - 1)
 			philos[i].fork_right = &(philos[i + 1].fork_left);
@@ -94,12 +97,19 @@ int	philos_init(t_args *args)
 {
 	t_philo			*philos;
 	pthread_mutex_t	put_lock;
+	short			simu_is_end;
+	pthread_mutex_t	simu_mutex;
 
 	philos = malloc(sizeof(*philos) * args->nb_philos);
 	if (!philos)
 		return (terminate(NULL, "Malloc failed"));
 	pthread_mutex_init(&put_lock, NULL);
-	philos_init_values(philos, args, &put_lock);
+	pthread_mutex_init(&simu_mutex, NULL);
+	simu_is_end = 0;
+	philos_init_values(philos,
+		args,
+		&put_lock,
+		(t_simu){&simu_mutex, &simu_is_end});
 	philos_start(philos);
 	printf("END OF SIMULATION\n");
 	return (terminate(philos, NULL));

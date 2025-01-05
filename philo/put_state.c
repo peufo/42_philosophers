@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 01:10:18 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/05 17:43:37 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/05 18:28:35 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,29 @@ static char	*set_message(char msg[20], t_philo_state state)
 		return (ft_strcpy(text, msg));
 }
 
-static int	philo_check_is_died(t_philo *philo)
+static int	check_is_died(t_philo *philo)
 {
 	if (philo->is_died)
 		return (1);
 	philo->is_died = get_time() - philo->eat_at > philo->args.time_to_die;
 	if (philo->is_died)
 	{
-		// TODO SET END SIMULAATION
+		pthread_mutex_lock(philo->simu.mutex);
+		*(philo->simu.is_end) = 1;
+		pthread_mutex_unlock(philo->simu.mutex);
 		return (put_state(philo, DIED));
 	}
 	return (0);
+}
+
+static int	check_is_end(t_philo *philo)
+{
+	short	is_end;
+
+	pthread_mutex_lock(philo->simu.mutex);
+	is_end = *(philo->simu.is_end);
+	pthread_mutex_unlock(philo->simu.mutex);
+	return (is_end);
 }
 
 int	put_state(t_philo *philo, t_philo_state state)
@@ -64,8 +76,9 @@ int	put_state(t_philo *philo, t_philo_state state)
 	char	*cursor;
 	int		i;
 
-	if (state != DIED && philo_check_is_died(philo))
-		return (1);
+	if (state != DIED)
+		if (check_is_died(philo) || check_is_end(philo))
+			return (1);
 	cursor = ft_strcpy("%-6d %d ", msg);
 	if (LOGS_MODE_PRETTY)
 	{

@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/05 17:50:32 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/05 18:11:05 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ typedef enum e_philo_state
 
 typedef struct s_simu
 {
-	short			*is_running;
 	pthread_mutex_t	*mutex;
+	short			*is_end;
 }	t_simu;
 
 typedef struct s_philo	t_philo;
