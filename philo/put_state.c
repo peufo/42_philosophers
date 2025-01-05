@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   put_state.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
+/*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 01:10:18 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/04 13:50:12 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/05 17:43:37 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,11 @@ static int	philo_check_is_died(t_philo *philo)
 		return (1);
 	philo->is_died = get_time() - philo->eat_at > philo->args.time_to_die;
 	if (philo->is_died)
+	{
+		// TODO SET END SIMULAATION
 		return (put_state(philo, DIED));
-	return (philo->is_died);
+	}
+	return (0);
 }
 
 int	put_state(t_philo *philo, t_philo_state state)

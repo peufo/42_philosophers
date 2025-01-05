@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philos_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
+/*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 13:33:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/04 13:49:54 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/05 18:04:11 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ static int	philos_start(t_philo *philos)
 	int	i;
 	int	nb_philos;
 
-	i = 0;
 	nb_philos = philos->args.nb_philos;
+	i = 0;
 	while (i < nb_philos)
 	{
 		if (pthread_create(&(philos[i].thread), NULL, philo_run, &(philos[i])))
@@ -63,22 +63,35 @@ static int	philos_start(t_philo *philos)
 	return (0);
 }
 
-static void	philos_link_forks(t_philo *philos)
+static void	philos_init_values(
+	t_philo *philos,
+	t_args *args,
+	pthread_mutex_t *put_lock
+)
 {
 	int	i;
+	int	nb_philos;
 
+	nb_philos = args->nb_philos;
 	i = 0;
-	while (i < philos->args.nb_philos - 1)
+	while (i < nb_philos)
 	{
-		philos[i].fork_right = &(philos[i + 1].fork_left);
+		philos[i].id = i + 1;
+		philos[i].args = *args;
+		philos[i].eat_at = 0;
+		philos[i].is_died = 0;
+		philos[i].put_lock = put_lock;
+		pthread_mutex_init(&(philos[i].fork_left), NULL);
+		if (i < nb_philos - 1)
+			philos[i].fork_right = &(philos[i + 1].fork_left);
+		else
+			philos[nb_philos - 1].fork_right = &(philos->fork_left);
 		i++;
 	}
-	philos[philos->args.nb_philos - 1].fork_right = &(philos->fork_left);
 }
 
 int	philos_init(t_args *args)
 {
-	int				i;
 	t_philo			*philos;
 	pthread_mutex_t	put_lock;
 
@@ -86,18 +99,8 @@ int	philos_init(t_args *args)
 	if (!philos)
 		return (terminate(NULL, "Malloc failed"));
 	pthread_mutex_init(&put_lock, NULL);
-	i = 0;
-	while (i < args->nb_philos)
-	{
-		philos[i].id = i + 1;
-		philos[i].args = *args;
-		philos[i].eat_at = 0;
-		philos[i].is_died = 0;
-		philos[i].put_lock = &put_lock;
-		pthread_mutex_init(&(philos[i].fork_left), NULL);
-		i++;
-	}
-	philos_link_forks(philos);
+	philos_init_values(philos, args, &put_lock);
 	philos_start(philos);
+	printf("END OF SIMULATION\n");
 	return (terminate(philos, NULL));
 }

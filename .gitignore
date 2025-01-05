@@ -2,3 +2,4 @@ philo/philo
 build
 .DS_Store
 *.dSYM
+leaks.log
