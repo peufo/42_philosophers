@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   put_state.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 01:10:18 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/05 18:28:35 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/06 19:50:14 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static char	*set_message(char msg[20], t_philo_state state)
 		return (ft_strcpy(text, msg));
 }
 
-static int	check_is_died(t_philo *philo)
+static int	philo_is_died(t_philo *philo)
 {
 	if (philo->is_died)
 		return (1);
@@ -60,7 +60,7 @@ static int	check_is_died(t_philo *philo)
 	return (0);
 }
 
-static int	check_is_end(t_philo *philo)
+static int	simu_is_end(t_philo *philo)
 {
 	short	is_end;
 
@@ -77,7 +77,7 @@ int	put_state(t_philo *philo, t_philo_state state)
 	int		i;
 
 	if (state != DIED)
-		if (check_is_died(philo) || check_is_end(philo))
+		if (philo_is_died(philo) || simu_is_end(philo))
 			return (1);
 	cursor = ft_strcpy("%-6d %d ", msg);
 	if (LOGS_MODE_PRETTY)

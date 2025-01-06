@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philos_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 13:33:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/05 18:17:44 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/06 20:00:24 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,5 @@ int	philos_init(t_args *args)
 		&put_lock,
 		(t_simu){&simu_mutex, &simu_is_end});
 	philos_start(philos);
-	printf("END OF SIMULATION\n");
 	return (terminate(philos, NULL));
 }

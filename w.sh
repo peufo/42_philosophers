@@ -40,9 +40,13 @@ watch() {
 				warning "COMPILATION FAILED"
 			else
 				success "COMPILATION OK"
-				#valgrind --leak-check=full --track-origins=yes --log-file=leaks.log -s $PROG "4" "3500" "1000" "1500" "3" &
-				valgrind --tool=helgrind --log-file=leaks.log -s $PROG "4" "3500" "1000" "1500" "3" &
-				$PROG "4" "3500" "1000" "1500" "3" &
+
+				if [ $(uname) = "Linux" ]; then
+					#valgrind --leak-check=full --track-origins=yes --log-file=leaks.log -s $PROG "4" "3500" "1000" "1500" "3" &
+					valgrind --tool=helgrind --log-file=leaks.log -s $PROG "4" "3500" "1000" "1500" "3" &
+				else
+					leaks -quiet --atExit -- $PROG "4" "3500" "1000" "1500" "3" &
+				fi
 				PROG_PID=$!
 				trap 'kill "$PROG_PID" & return' 2
 			fi

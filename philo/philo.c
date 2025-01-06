@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 00:06:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/04 13:27:34 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/06 19:51:29 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,16 @@ void	philo_cycle(t_philo *philo)
 {
 	while (1)
 	{
-		put_state(philo, THINK);
+		if (put_state(philo, THINK))
+			return ;
 		if (await_forks(philo))
 			return ;
 		if (put_state(philo, EAT))
 			return ;
 		philo->eat_at = get_time();
 		usleep(philo->args.time_to_eat * 1000);
-		put_state(philo, SLEEP);
+		if (put_state(philo, SLEEP))
+			return ;
 		pthread_mutex_unlock(&(philo->fork_left));
 		pthread_mutex_unlock(philo->fork_right);
 		usleep(philo->args.time_to_sleep * 1000);
