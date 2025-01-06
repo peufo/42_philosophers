@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/06 19:50:19 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/06 20:16:18 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
-# define LOGS_MODE_PRETTY 1
+# define LOGS_MODE_PRETTY 0
 
 typedef struct s_args
 {

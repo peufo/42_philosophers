@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 01:10:18 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/06 19:50:14 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/06 20:08:25 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,19 @@ static char	*set_message(char msg[20], t_philo_state state)
 		return (ft_strcpy(text, msg));
 }
 
+static int	simu_is_end(t_philo *philo)
+{
+	short	is_end;
+
+	pthread_mutex_lock(philo->simu.mutex);
+	is_end = *(philo->simu.is_end);
+	pthread_mutex_unlock(philo->simu.mutex);
+	return (is_end);
+}
+
 static int	philo_is_died(t_philo *philo)
 {
-	if (philo->is_died)
+	if (philo->is_died || simu_is_end(philo))
 		return (1);
 	philo->is_died = get_time() - philo->eat_at > philo->args.time_to_die;
 	if (philo->is_died)
@@ -58,16 +68,6 @@ static int	philo_is_died(t_philo *philo)
 		return (put_state(philo, DIED));
 	}
 	return (0);
-}
-
-static int	simu_is_end(t_philo *philo)
-{
-	short	is_end;
-
-	pthread_mutex_lock(philo->simu.mutex);
-	is_end = *(philo->simu.is_end);
-	pthread_mutex_unlock(philo->simu.mutex);
-	return (is_end);
 }
 
 int	put_state(t_philo *philo, t_philo_state state)

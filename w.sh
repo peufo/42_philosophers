@@ -45,7 +45,8 @@ watch() {
 					#valgrind --leak-check=full --track-origins=yes --log-file=leaks.log -s $PROG "4" "3500" "1000" "1500" "3" &
 					valgrind --tool=helgrind --log-file=leaks.log -s $PROG "4" "3500" "1000" "1500" "3" &
 				else
-					leaks -quiet --atExit -- $PROG "4" "3500" "1000" "1500" "3" &
+					#leaks -quiet --atExit -- $PROG "25" "4000" "1000" "1500" &
+					$PROG "25" "3000" "1000" "1500" &
 				fi
 				PROG_PID=$!
 				trap 'kill "$PROG_PID" & return' 2
