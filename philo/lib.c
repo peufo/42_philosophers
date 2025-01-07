@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/31 03:16:54 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/07 01:30:41 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,13 @@ int	get_time_relatif(void)
 	if (!start)
 		start = get_time();
 	return (get_time() - start);
+}
+
+void	ft_sleep(int ms)
+{
+	int	start;
+
+	start = get_time();
+	while (start + ms > get_time())
+		usleep(500);
 }

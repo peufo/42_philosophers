@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 00:06:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/07 00:57:11 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/07 01:29:36 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	philo_eat(t_philo *philo)
 		return (0);
 	}
 	source_set(&(philo->eat_at), get_time());
-	usleep(philo->args.time_to_eat * 1000);
+	ft_sleep(philo->args.time_to_eat);
 	return (1);
 }
 
@@ -66,7 +66,7 @@ void	philo_cycle(t_philo *philo)
 		put_state(philo, SLEEP);
 		pthread_mutex_unlock(&(philo->fork_left));
 		pthread_mutex_unlock(philo->fork_right);
-		usleep(philo->args.time_to_sleep * 1000);
+		ft_sleep(philo->args.time_to_sleep);
 		if (!(--philo->args.max_times_eat))
 		{
 			source_set(&(philo->is_end), 1);

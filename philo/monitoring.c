@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:32:24 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/07 01:23:04 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/07 01:30:05 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	philos_are_running(t_philo *philos, int time_left, int nb_philos)
 	}
 	if (nb_philos == nb_philos_end)
 		return (0);
-	usleep(1000 * (time_left + 1));
+	ft_sleep(time_left + 1);
 	return (1);
 }
 

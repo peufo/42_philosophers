@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/07 01:05:15 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/07 01:29:13 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,6 @@ struct s_philo
 	t_monit			monit;
 };
 
-int			ft_is_int(char *str);
-int			ft_atoi(const char *str);
-int			ft_strlen(char *str);
 void		*monitoring(void *data);
 void		*philo_run(void *data);
 int			philos_init(t_args *args);
@@ -95,5 +92,10 @@ int			source_get(t_source *source);
 t_client	client_create(t_source *source);
 void		client_set(t_client client, int value);
 int			client_get(t_client client);
+
+int			ft_is_int(char *str);
+int			ft_atoi(const char *str);
+int			ft_strlen(char *str);
+void		ft_sleep(int ms);
 
 #endif
