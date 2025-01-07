@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 00:06:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/06 19:51:29 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/07 00:57:11 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,37 +28,50 @@ static int	await_forks(t_philo *philo)
 		fork_a = philo->fork_right;
 	}
 	pthread_mutex_lock(fork_a);
-	if (put_state(philo, TAKE_FORK))
-		return (pthread_mutex_unlock(fork_a), 1);
+	if (!put_state(philo, TAKE_FORK))
+		return (pthread_mutex_unlock(fork_a), 0);
 	pthread_mutex_lock(fork_b);
-	if (put_state(philo, TAKE_FORK))
+	if (!put_state(philo, TAKE_FORK))
 	{
 		pthread_mutex_unlock(fork_a);
 		pthread_mutex_unlock(fork_b);
-		return (1);
+		return (0);
 	}
-	return (0);
+	return (1);
+}
+
+static int	philo_eat(t_philo *philo)
+{
+	if (!await_forks(philo))
+		return (0);
+	if (!put_state(philo, EAT))
+	{
+		pthread_mutex_unlock(&(philo->fork_left));
+		pthread_mutex_unlock(philo->fork_right);
+		return (0);
+	}
+	source_set(&(philo->eat_at), get_time());
+	usleep(philo->args.time_to_eat * 1000);
+	return (1);
 }
 
 void	philo_cycle(t_philo *philo)
 {
 	while (1)
 	{
-		if (put_state(philo, THINK))
+		if (!put_state(philo, THINK))
 			return ;
-		if (await_forks(philo))
+		if (!philo_eat(philo))
 			return ;
-		if (put_state(philo, EAT))
-			return ;
-		philo->eat_at = get_time();
-		usleep(philo->args.time_to_eat * 1000);
-		if (put_state(philo, SLEEP))
-			return ;
+		put_state(philo, SLEEP);
 		pthread_mutex_unlock(&(philo->fork_left));
 		pthread_mutex_unlock(philo->fork_right);
 		usleep(philo->args.time_to_sleep * 1000);
 		if (!(--philo->args.max_times_eat))
+		{
+			source_set(&(philo->is_end), 1);
 			return ;
+		}
 	}
 }
 
@@ -67,7 +80,7 @@ void	*philo_run(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
-	philo->eat_at = get_time();
+	source_set(&(philo->eat_at), get_time());
 	philo_cycle(philo);
 	return (NULL);
 }
