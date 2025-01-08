@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 00:06:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/07 01:29:36 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/08 01:11:47 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	philo_eat(t_philo *philo)
 	return (1);
 }
 
-void	philo_cycle(t_philo *philo)
+static void	philo_cycle(t_philo *philo)
 {
 	while (1)
 	{

@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 13:33:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/07 01:25:41 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/08 00:07:16 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static void	philos_init_values(
 	{
 		philos[i].id = i + 1;
 		philos[i].args = *args;
-		philos[i].is_died = 0;
 		philos[i].put_lock = put_lock;
 		source_init(&(philos[i].eat_at), 0);
 		philos[i].monit.eat_at = client_create(&(philos[i].eat_at));

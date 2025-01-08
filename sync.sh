@@ -2,13 +2,13 @@
 
 #SYNC Makefile SOURCES
 sync() {
-
-	SOURCES=$(ls philo/*.c | sed 's;philo/;;g' | tr '\n' ' ')
+	DIR=philo_bonus
+	SOURCES=$(ls $DIR/*.c | sed "s;$DIR/;;g" | tr '\n' ' ')
 	SED_COMMAND="s;^SOURCES	.*;SOURCES			=	$SOURCES;"
 	if [ $(uname) = "Linux" ];  then
-		sed -i -e "$SED_COMMAND" ./philo/Makefile
+		sed -i -e "$SED_COMMAND" "./$DIR/Makefile"
 	else
-		sed -i "" "$SED_COMMAND" ./philo/Makefile
+		sed -i "" "$SED_COMMAND" "./$DIR/Makefile"
 	fi
 }
 

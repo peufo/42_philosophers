@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/07 01:29:13 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/08 01:23:03 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,6 @@ typedef enum e_philo_state
 	TAKE_FORK
 }	t_philo_state;
 
-typedef struct s_simu
-{
-	pthread_mutex_t	*mutex;
-	short			*is_end;
-}	t_simu;
-
 typedef struct s_source
 {
 	int				value;
@@ -72,7 +66,6 @@ struct s_philo
 	t_client		simu_end;
 	t_source		eat_at;
 	t_source		is_end;
-	int				is_died;
 	pthread_t		thread;
 	t_args			args;
 	t_monit			monit;
@@ -81,7 +74,6 @@ struct s_philo
 void		*monitoring(void *data);
 void		*philo_run(void *data);
 int			philos_init(t_args *args);
-void		philo_cycle(t_philo *philo);
 int			get_time(void);
 int			get_time_relatif(void);
 int			put_state(t_philo *philo, t_philo_state state);

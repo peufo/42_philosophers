@@ -10,6 +10,8 @@ success() {
 	echo -e "\033[32m$1\033[0m"
 }
 
+DIR="philo_bonus"
+
 watch() {
 	STATE_A=""
 	PROG_PID=""
@@ -25,17 +27,17 @@ watch() {
 			info "HEY BRO 👋 $(date)"
 			./sync.sh
 
-			NORM_ERROR=$(sed -e '/.*: OK!/d' <(norminette ./philo))
+			NORM_ERROR=$(sed -e '/.*: OK!/d' <(norminette ./philo ./philo_bonus))
 			if [[ $NORM_ERROR == "" ]] ; then
 				success "\nNORMINETTE OK\n"
 			else
 				warning "\nNORMINETTE ERROR"
 				echo -e "$NORM_ERROR\n\n\n"
 			fi
-
-			PROG="./philo/philo"
+			
+			PROG="./$DIR/$DIR"
 			rm -f "$PROG"
-			make -C philo
+			make -C $DIR
 			if [ ! -f "$PROG" ]; then
 				warning "COMPILATION FAILED"
 			else
@@ -62,7 +64,7 @@ get_state() {
 	else
 		MD5="md5"
 	fi
-	echo $(find -L ./philo -type f -name "*.[ch]" -exec $MD5 {} \;)
+	echo $(find -L $DIR -type f -name "*.[ch]" -exec $MD5 {} \;)
 }
 
 watch

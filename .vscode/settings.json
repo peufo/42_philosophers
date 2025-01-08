@@ -4,6 +4,7 @@
     "philo.h": "c",
     "time.h": "c",
     "exception": "c",
-    "locale": "c"
+    "locale": "c",
+    "stdio.h": "c"
   }
 }
