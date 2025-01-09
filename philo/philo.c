@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 00:06:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 14:56:48 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/09 15:15:09 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ void	*philo_run(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
-	shared_set(&(philo->eat_at), get_time());
 	philo_cycle(philo);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 13:33:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 15:05:21 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/09 15:13:42 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,14 @@ static int	philos_start(t_philo *philos)
 	int			i;
 	int			nb_philos;
 	pthread_t	monit;
+	int			start_time;
 
 	nb_philos = philos->args.nb_philos;
+	start_time = get_time();
 	i = 0;
 	while (i < nb_philos)
 	{
+		shared_set(&(philos[i].eat_at), start_time);
 		if (pthread_create(&(philos[i].thread), NULL, philo_run, philos + i))
 			return (terminate(philos, "Create thread philo failed"));
 		i++;

@@ -44,8 +44,8 @@ watch() {
 				success "COMPILATION OK"
 
 				if [ $(uname) = "Linux" ]; then
-					#valgrind --leak-check=full --track-origins=yes --log-file=leaks.log -s $PROG "4" "3500" "1000" "1500" "3" &
-					valgrind --tool=helgrind --log-file=leaks.log -s $PROG "5" "2500" "1000" "1500" "3" &
+					valgrind --leak-check=full --track-origins=yes --log-file=leaks.log -s $PROG "4" "3500" "1000" "1500" "3" &
+					#valgrind --tool=helgrind --log-file=leaks.log -s $PROG "5" "2500" "1000" "1500" "3" &
 				else
 					#leaks -quiet --atExit -- $PROG "25" "4000" "1000" "1500" &
 					$PROG "5" "1500" "1000" "1400" "3" &
