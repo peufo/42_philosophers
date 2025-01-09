@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 01:10:18 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 13:23:13 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/09 15:52:59 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	put_state(t_philo *philo, t_philo_state state)
 	char	*cursor;
 	int		i;
 
-	if (state != DIED && source_get(&(philo->is_end)))
+	if (state != DIED && shared_get(&(philo->is_end)))
 		return ;
 	cursor = ft_strcpy("%-6d %d ", msg);
 	if (LOGS_MODE_PRETTY)

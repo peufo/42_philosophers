@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 13:25:23 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/09 15:52:42 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@
 # include <semaphore.h>
 # include <signal.h>
 # include <stdbool.h>
-# include <fcntl.h> 
+# include <fcntl.h>
+# include <string.h>
 # define LOGS_MODE_PRETTY 1
-# define SIMU_FORKS "simu_forks"
-# define SIMU_STOP "simu_stop"
+# define SIMU_FORKS "sem_simu_forks"
+# define SIMU_END "sem_simu_end"
 
 typedef struct s_args
 {
@@ -34,22 +35,17 @@ typedef struct s_args
 	int	max_times_eat;
 }	t_args;
 
-typedef struct s_source
+typedef struct s_shared
 {
-	int				value;
-	pthread_mutex_t	mutex;
-}	t_source;
-
-typedef struct s_client
-{
-	int				*value;
-	pthread_mutex_t	*mutex;
-}	t_client;
+	sem_t	*semaphore;
+	int		value;
+	int		*ptr_value;
+}	t_shared;
 
 typedef struct s_simu
 {
 	int		start_at;
-	sem_t	*stop;
+	sem_t	*end;
 	sem_t	*forks;
 	t_args	args;
 }	t_simu;
@@ -67,10 +63,8 @@ typedef struct s_philo
 {
 	int			id;
 	int			eat_at;
-	t_source	died_at;
-	t_client	died_at_monit;
-	t_source	is_end;
-	t_client	is_end_monit;
+	t_shared	died_at;
+	t_shared	is_end;
 	t_simu		*simu;
 	pthread_t	dead_thread;
 }	t_philo;
@@ -79,16 +73,10 @@ void		simu_start(t_simu *simu);
 void		philo_start(t_simu *simu, int id);
 void		put_state(t_philo *philo, t_philo_state state);
 
-void		*monitoring(void *data);
-void		*philo_run(void *data);
-int			philos_init(t_args *args);
-
-void		source_init(t_source *source, int value);
-void		source_set(t_source *source, int value);
-int			source_get(t_source *source);
-t_client	client_create(t_source *source);
-void		client_set(t_client client, int value);
-int			client_get(t_client client);
+void		shared_init(t_shared *shared, char *name, int value);
+void		shared_destroy(t_shared *shared);
+void		shared_set(t_shared *shared, int value);
+int			shared_get(t_shared *shared);
 
 int			get_time(void);
 int			get_time_relatif(t_simu *simu);

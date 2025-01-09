@@ -5,6 +5,7 @@
     "time.h": "c",
     "exception": "c",
     "locale": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "type_traits": "c"
   }
 }

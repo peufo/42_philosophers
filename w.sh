@@ -10,7 +10,7 @@ success() {
 	echo -e "\033[32m$1\033[0m"
 }
 
-DIR="philo"
+DIR="philo_bonus"
 
 watch() {
 	STATE_A=""
@@ -44,7 +44,7 @@ watch() {
 				success "COMPILATION OK"
 
 				if [ $(uname) = "Linux" ]; then
-					valgrind --leak-check=full --track-origins=yes --log-file=leaks.log -s $PROG "4" "3500" "1000" "1500" "3" &
+					valgrind --leak-check=full --track-origins=yes --log-file=leaks.log -s $PROG "5" "3200" "1000" "1500" "3" &
 					#valgrind --tool=helgrind --log-file=leaks.log -s $PROG "5" "2500" "1000" "1500" "3" &
 				else
 					#leaks -quiet --atExit -- $PROG "25" "4000" "1000" "1500" &

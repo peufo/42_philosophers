@@ -1,36 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   shared_source.c                                    :+:      :+:    :+:   */
+/*   shared.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 00:05:30 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 14:20:51 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/09 16:04:36 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	source_init(t_source *source, int value)
+void	shared_init(t_shared *shared, char *name, int value)
 {
-	source->value = value;
-	pthread_mutex_init(&(source->mutex), NULL);
+	shared->value = value;
+	shared->ptr_value = &(shared->value);
+	sem_unlink(name);
+	shared->semaphore = sem_open(name, O_CREAT, 0600, true);
 }
 
-void	source_set(t_source *source, int value)
+void	shared_destroy(t_shared *shared)
 {
-	pthread_mutex_lock(&(source->mutex));
-	source->value = value;
-	pthread_mutex_unlock(&(source->mutex));
+	sem_close(shared->semaphore);
 }
 
-int	source_get(t_source *source)
+void	shared_set(t_shared *shared, int value)
+{
+	sem_wait(shared->semaphore);
+	*(shared->ptr_value) = value;
+	sem_post(shared->semaphore);
+}
+
+int	shared_get(t_shared *shared)
 {
 	int	value;
 
-	pthread_mutex_lock(&(source->mutex));
-	value = source->value;
-	pthread_mutex_unlock(&(source->mutex));
+	sem_wait(shared->semaphore);
+	value = *(shared->ptr_value);
+	sem_post(shared->semaphore);
 	return (value);
 }
