@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitoring.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
+/*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:32:24 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/07 01:30:05 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/09 14:47:44 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	philo_died_in(t_philo *philo)
 {
 	int	eat_at;
 
-	eat_at = client_get(philo->monit.eat_at);
+	eat_at = shared_get(philo->eat_at);
 	return ((eat_at + philo->args.time_to_die) - get_time());
 }
 
@@ -30,7 +30,7 @@ static int	philos_are_running(t_philo *philos, int time_left, int nb_philos)
 	i = 0;
 	while (i < nb_philos)
 	{
-		if (client_get(philos[i].monit.is_end))
+		if (shared_get(philos[i].is_end))
 		{
 			nb_philos_end++;
 			i++;
@@ -54,14 +54,14 @@ void	*monitoring(void *data)
 	t_philo		*philos;
 	int			nb_philos;
 	int			time_to_die;
-	t_client	simu_end;
+	t_shared	simu_end;
 
 	philos = (t_philo *)data;
 	time_to_die = philos->args.time_to_die;
 	nb_philos = philos->args.nb_philos;
-	simu_end = philos->monit.simu_end;
-	while (!client_get(simu_end))
+	simu_end = philos->simu_end;
+	while (!shared_get(simu_end))
 		if (!philos_are_running(philos, time_to_die, nb_philos))
-			return (client_set(simu_end, 1), NULL);
+			return (shared_set(simu_end, true), NULL);
 	return (NULL);
 }

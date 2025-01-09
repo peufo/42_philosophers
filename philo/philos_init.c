@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philos_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
+/*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 13:33:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/08 00:07:16 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/09 14:44:01 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	philos_init_values(
 	t_philo *philos,
 	t_args *args,
 	pthread_mutex_t *put_lock,
-	t_source *simu_end
+	t_shared simu_end
 )
 {
 	int	i;
@@ -74,12 +74,9 @@ static void	philos_init_values(
 		philos[i].id = i + 1;
 		philos[i].args = *args;
 		philos[i].put_lock = put_lock;
-		source_init(&(philos[i].eat_at), 0);
-		philos[i].monit.eat_at = client_create(&(philos[i].eat_at));
-		source_init(&(philos[i].is_end), 0);
-		philos[i].monit.is_end = client_create(&(philos[i].is_end));
-		philos[i].simu_end = client_create(simu_end);
-		philos[i].monit.simu_end = client_create(simu_end);
+		shared_init(&(philos[i].eat_at), 0);
+		shared_init(&(philos[i].is_end), 0);
+		philos[i].simu_end = simu_end;
 		pthread_mutex_init(&(philos[i].fork_left), NULL);
 		if (i < nb_philos - 1)
 			philos[i].fork_right = &(philos[i + 1].fork_left);
@@ -93,14 +90,14 @@ int	philos_init(t_args *args)
 {
 	t_philo			*philos;
 	pthread_mutex_t	put_lock;
-	t_source		simu_end;
+	t_shared		simu_end;
 
 	philos = malloc(sizeof(*philos) * args->nb_philos);
 	if (!philos)
 		return (terminate(NULL, "Malloc failed"));
 	pthread_mutex_init(&put_lock, NULL);
-	source_init(&simu_end, 0);
-	philos_init_values(philos, args, &put_lock, &simu_end);
+	shared_init(&simu_end, 0);
+	philos_init_values(philos, args, &put_lock, simu_end);
 	philos_start(philos);
 	return (terminate(philos, NULL));
 }

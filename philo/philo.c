@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
+/*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 00:06:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/08 01:11:47 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/09 14:46:12 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	philo_eat(t_philo *philo)
 		pthread_mutex_unlock(philo->fork_right);
 		return (0);
 	}
-	source_set(&(philo->eat_at), get_time());
+	shared_set(philo->eat_at, get_time());
 	ft_sleep(philo->args.time_to_eat);
 	return (1);
 }
@@ -69,7 +69,7 @@ static void	philo_cycle(t_philo *philo)
 		ft_sleep(philo->args.time_to_sleep);
 		if (!(--philo->args.max_times_eat))
 		{
-			source_set(&(philo->is_end), 1);
+			shared_set(philo->is_end, 1);
 			return ;
 		}
 	}
@@ -80,7 +80,7 @@ void	*philo_run(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
-	source_set(&(philo->eat_at), get_time());
+	shared_set(philo->eat_at, get_time());
 	philo_cycle(philo);
 	return (NULL);
 }
