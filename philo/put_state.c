@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 01:10:18 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 14:45:56 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/09 14:57:59 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	put_state(t_philo *philo, t_philo_state state)
 	char	*cursor;
 	int		i;
 
-	if (state != DIED && shared_get(philo->simu_end))
+	if (state != DIED && shared_get(&(philo->simu_end)))
 		return (0);
 	cursor = ft_strcpy("%-6d %d ", msg);
 	if (LOGS_MODE_PRETTY)
