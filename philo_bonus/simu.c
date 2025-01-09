@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 00:12:57 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/08 01:22:30 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/08 01:30:06 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,14 @@ void	simu_start(t_simu *simu)
 {
 	int		i;
 	pid_t	*pids;
+	int		nb_philos;
 
 	semaphores_init(simu);
-	pids = malloc(sizeof(*pids) * simu->args.nb_philos);
+	simu->start_at = get_time();
+	nb_philos = simu->args.nb_philos;
+	pids = malloc(sizeof(*pids) * nb_philos);
 	i = 0;
-	while (i < simu->args.nb_philos)
+	while (i < nb_philos)
 	{
 		pids[i] = fork();
 		if (pids[i] == 0)

@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/07 01:30:41 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/08 01:32:28 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,9 @@ int	get_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-int	get_time_relatif(void)
+int	get_time_relatif(t_simu *simu)
 {
-	static int	start;
-
-	if (!start)
-		start = get_time();
-	return (get_time() - start);
+	return (get_time() - simu->start_at);
 }
 
 void	ft_sleep(int ms)

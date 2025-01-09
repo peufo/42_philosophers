@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/08 01:21:46 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/08 01:34:29 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ typedef struct s_args
 
 typedef struct s_simu
 {
-	sem_t	*forks;
+	int		start_at;
 	sem_t	*stop;
+	sem_t	*forks;
 	t_args	args;
 }	t_simu;
 
@@ -66,7 +67,7 @@ void	*philo_run(void *data);
 int		philos_init(t_args *args);
 
 int		get_time(void);
-int		get_time_relatif(void);
+int		get_time_relatif(t_simu *simu);
 int		ft_is_int(char *str);
 int		ft_atoi(const char *str);
 int		ft_strlen(char *str);

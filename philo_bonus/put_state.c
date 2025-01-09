@@ -6,7 +6,7 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 01:10:18 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/08 01:17:16 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/08 01:32:08 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	put_state(t_philo *philo, t_philo_state state)
 	*(cursor++) = '\n';
 	*(cursor++) = '\0';
 	if (LOGS_MODE_PRETTY)
-		printf(msg, get_time_relatif(), philo->id);
+		printf(msg, get_time_relatif(philo->simu), philo->id);
 	else
 		printf(msg, get_time(), philo->id);
 	return ;

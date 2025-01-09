@@ -6,13 +6,13 @@
 /*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 00:00:27 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/08 01:21:13 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/08 01:38:37 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	philo_cycle(t_philo *philo)
+void	philo_cycle(t_philo *philo)
 {
 	while (1)
 	{
@@ -30,7 +30,8 @@ static void	philo_cycle(t_philo *philo)
 		ft_sleep(philo->simu->args.time_to_sleep);
 		if (!(--philo->simu->args.max_times_eat))
 		{
-			sem_post(philo->simu->stop);
+			//TODO: FOR DIED
+			//sem_post(philo->simu->stop);
 			return ;
 		}
 	}
@@ -39,8 +40,7 @@ static void	philo_cycle(t_philo *philo)
 void	philo_start(t_simu *simu, int id)
 {
 	t_philo	philo;
-	
-	(void)simu;
+
 	philo.id = id;
 	philo.simu = simu;
 	philo_cycle(&philo);
