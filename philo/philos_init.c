@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 13:33:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 14:44:01 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/09 15:05:21 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static int	terminate(t_philo *philos, char *error)
 		i = 0;
 		while (i < philos->args.nb_philos)
 		{
-			pthread_mutex_destroy(&(philos[i].eat_at.mutex));
+			shared_destroy(&(philos[i].eat_at));
+			shared_destroy(&(philos[i].is_end));
 			pthread_mutex_destroy(&(philos[i].fork_left));
 			i++;
 		}
@@ -99,5 +100,6 @@ int	philos_init(t_args *args)
 	shared_init(&simu_end, 0);
 	philos_init_values(philos, args, &put_lock, simu_end);
 	philos_start(philos);
+	shared_destroy(&simu_end);
 	return (terminate(philos, NULL));
 }
