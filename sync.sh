@@ -2,7 +2,7 @@
 
 #SYNC Makefile SOURCES
 sync() {
-	DIR=philo_bonus
+	DIR=philo
 	SOURCES=$(ls $DIR/*.c | sed "s;$DIR/;;g" | tr '\n' ' ')
 	SED_COMMAND="s;^SOURCES	.*;SOURCES			=	$SOURCES;"
 	if [ $(uname) = "Linux" ];  then

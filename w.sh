@@ -10,7 +10,7 @@ success() {
 	echo -e "\033[32m$1\033[0m"
 }
 
-DIR="philo_bonus"
+DIR="philo"
 
 watch() {
 	STATE_A=""
@@ -45,10 +45,10 @@ watch() {
 
 				if [ $(uname) = "Linux" ]; then
 					#valgrind --leak-check=full --track-origins=yes --log-file=leaks.log -s $PROG "4" "3500" "1000" "1500" "3" &
-					valgrind --tool=helgrind --log-file=leaks.log -s $PROG "4" "3500" "1000" "1500" "3" &
+					valgrind --tool=helgrind --log-file=leaks.log -s $PROG "5" "2500" "1000" "1500" "3" &
 				else
 					#leaks -quiet --atExit -- $PROG "25" "4000" "1000" "1500" &
-					$PROG "5" "2000" "1000" "1400" "3" &
+					$PROG "5" "1500" "1000" "1400" "3" &
 				fi
 				PROG_PID=$!
 				trap 'kill "$PROG_PID" & return' 2
