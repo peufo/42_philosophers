@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 00:12:57 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 16:28:55 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/09 17:43:50 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static void	terminate(t_simu *simu, pid_t *pids, char *error, bool kill_pids)
 	free(pids);
 	sem_close(simu->forks);
 	sem_close(simu->end);
+	sem_close(simu->put);
 	if (error)
 	{
 		printf("Error: %s\n", error);
@@ -41,9 +42,11 @@ static void	terminate(t_simu *simu, pid_t *pids, char *error, bool kill_pids)
 static void	semaphores_init(t_simu *simu)
 {
 	sem_unlink(SIMU_FORKS);
+	sem_unlink(SIMU_PUT);
 	sem_unlink(SIMU_END);
 	simu->forks = sem_open(SIMU_FORKS, O_CREAT, 0600, simu->args.nb_philos);
-	simu->end = sem_open(SIMU_END, O_CREAT, 0600, 0);
+	simu->put = sem_open(SIMU_PUT, O_CREAT, 0600, true);
+	simu->end = sem_open(SIMU_END, O_CREAT, 0600, false);
 }
 
 void	simu_start(t_simu *simu)
@@ -70,7 +73,14 @@ void	simu_start(t_simu *simu)
 		}
 		i++;
 	}
-	sem_wait(simu->end);
+	i = 0;
+	while (i < nb_philos)
+	{
+		printf("process child wait\n");
+		sem_wait(simu->end);
+		printf("process child end\n");
+		i++;
+	}
 	// TODO: is never call if not died
 	terminate(simu, pids, NULL, true);
 }

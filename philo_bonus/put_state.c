@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 01:10:18 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 15:52:59 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/09 17:12:29 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,11 @@ void	put_state(t_philo *philo, t_philo_state state)
 	cursor = set_message(cursor, state);
 	*(cursor++) = '\n';
 	*(cursor++) = '\0';
+	sem_wait(philo->simu->put);
 	if (LOGS_MODE_PRETTY)
 		printf(msg, get_time_relatif(philo->simu), philo->id);
 	else
 		printf(msg, get_time(), philo->id);
+	sem_post(philo->simu->put);
 	return ;
 }

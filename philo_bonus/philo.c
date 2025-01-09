@@ -6,13 +6,25 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 00:00:27 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 16:20:28 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/09 17:45:00 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*dead_monitoring(void *data)
+static void	kill_all(t_philo	*philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->simu->args.nb_philos)
+	{
+		sem_post(philo->simu->end);
+		i++;
+	}
+}
+
+static void	*dead_monitoring(void *data)
 {
 	t_philo	*philo;
 	int		time_left;
@@ -26,7 +38,7 @@ void	*dead_monitoring(void *data)
 		{
 			shared_set(&(philo->is_end), true);
 			put_state(philo, DIED);
-			sem_post(philo->simu->end);
+			kill_all(philo);
 			return (NULL);
 		}
 		ft_sleep(time_left + 1);
@@ -34,7 +46,7 @@ void	*dead_monitoring(void *data)
 	return (NULL);
 }
 
-void	philo_cycle(t_philo *philo)
+static void	philo_cycle(t_philo *philo)
 {
 	int	time_to_die;
 
@@ -56,6 +68,7 @@ void	philo_cycle(t_philo *philo)
 		if (!(--philo->simu->args.max_times_eat))
 		{
 			shared_set(&(philo->is_end), true);
+			sem_post(philo->simu->end);
 			return ;
 		}
 	}
@@ -69,8 +82,8 @@ void	philo_start(t_simu *simu, int id)
 	philo.id = id;
 	philo.simu = simu;
 	died_at = get_time() + philo.simu->args.time_to_die;
-	shared_init(&(philo.died_at), "SEM_DIED_AT", died_at);
-	shared_init(&(philo.is_end), "SEM_IS_END", false);
+	shared_init(&(philo.died_at), "SEM_PHILO_DIED_AT", died_at);
+	shared_init(&(philo.is_end), "SEM_PHILO_IS_END", false);
 	pthread_create(&(philo.dead_thread), NULL, dead_monitoring, &philo);
 	pthread_detach(philo.dead_thread);
 	philo_cycle(&philo);
