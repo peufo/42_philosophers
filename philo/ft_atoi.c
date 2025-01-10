@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
+/*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 23:31:41 by jvoisard          #+#    #+#             */
-/*   Updated: 2024/12/28 00:03:57 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/10 13:16:04 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	ft_is_over(char *str, char *limit)
 	return (0);
 }
 
-int	ft_is_int(char *str)
+int	ft_is_positive_int(char *str)
 {
 	short	sign;
 
@@ -59,18 +59,12 @@ int	ft_is_int(char *str)
 		str++;
 	if (*str == '-' || *str == '+')
 		sign -= (*(str++) == '-') * 2;
+	if (sign == -1)
+		return (0);
 	while (*str == '0')
 		str++;
-	if (sign == 1)
-	{
-		if (ft_is_over(str, "2147483647"))
-			return (0);
-	}
-	else
-	{
-		if (ft_is_over(str, "2147483648"))
-			return (0);
-	}
+	if (ft_is_over(str, "2147483647"))
+		return (0);
 	while (*str)
 		if (!is_digit(*(str++)))
 			return (0);

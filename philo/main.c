@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
+/*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:39:11 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/04 13:40:43 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/10 13:15:12 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	main(int ac, char **av)
 		return (print_args_help("Bad arguments count"));
 	i = 1;
 	while (i < ac)
-		if (!ft_is_int(av[i++]))
-			return (print_args_help("An argument is not an int"));
+		if (!ft_is_positive_int(av[i++]))
+			return (print_args_help("An argument is not a positive int"));
 	args.nb_philos = ft_atoi(av[1]);
 	args.time_to_die = ft_atoi(av[2]);
 	args.time_to_eat = ft_atoi(av[3]);

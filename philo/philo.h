@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/10 12:56:15 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/10 13:14:55 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int			shared_get(t_shared *shared);
 
 int			get_time(void);
 int			get_time_relatif(void);
-int			ft_is_int(char *str);
+int			ft_is_positive_int(char *str);
 int			ft_atoi(const char *str);
 int			ft_strlen(char *str);
 void		ft_sleep(int ms);
