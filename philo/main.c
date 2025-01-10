@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:39:11 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/10 13:15:12 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/10 13:27:23 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,18 @@
 
 static int	print_args_help(char *error)
 {
-	printf("Error: %s\n\n", error);
-	printf("Usage:\n");
+	if (error)
+	{
+		printf("\033[1mError\033[0m\n");
+		printf("%s\n\n", error);
+	}
+	printf("\033[1mUsage\033[0m\n");
 	printf("./philo nb_philos time_to_die time_to_eat ");
 	printf("time_to_sleep [max_times_eat]\n\n");
-	printf("Exemple:\n");
+	printf("\033[1mExemple\033[0m\n");
 	printf("./philo 4 4000 1000 1500\n\n");
+	if (error)
+		return (1);
 	return (0);
 }
 
@@ -33,7 +39,7 @@ int	main(int ac, char **av)
 	i = 1;
 	while (i < ac)
 		if (!ft_is_positive_int(av[i++]))
-			return (print_args_help("An argument is not a positive int"));
+			return (print_args_help("An argument is not a positive integer"));
 	args.nb_philos = ft_atoi(av[1]);
 	args.time_to_die = ft_atoi(av[2]);
 	args.time_to_eat = ft_atoi(av[3]);
@@ -41,5 +47,7 @@ int	main(int ac, char **av)
 	args.max_times_eat = -1;
 	if (ac == 6)
 		args.max_times_eat = ft_atoi(av[5]);
+	if (args.nb_philos == 0)
+		return (print_args_help("nb_philos need to be greater than 0"));
 	return (philos_init(&args));
 }
