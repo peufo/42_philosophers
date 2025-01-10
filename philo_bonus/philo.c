@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 00:00:27 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 17:45:00 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/10 12:36:28 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ void	philo_start(t_simu *simu, int id)
 	shared_init(&(philo.died_at), "SEM_PHILO_DIED_AT", died_at);
 	shared_init(&(philo.is_end), "SEM_PHILO_IS_END", false);
 	pthread_create(&(philo.dead_thread), NULL, dead_monitoring, &philo);
-	pthread_detach(philo.dead_thread);
 	philo_cycle(&philo);
+	pthread_join(philo.dead_thread, NULL);
 	shared_destroy(&(philo.died_at));
 	shared_destroy(&(philo.is_end));
 }

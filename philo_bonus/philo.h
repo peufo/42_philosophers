@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 17:35:46 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/10 12:56:29 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include <string.h>
-# define LOGS_MODE_PRETTY 1
+# define LOGS_MODE_PRETTY 0
 # define SIMU_FORKS "SEM_SIMU_FORKS"
 # define SIMU_PUT "SEM_SIMU_PUT"
 # define SIMU_END "SEM_SIMU_END"

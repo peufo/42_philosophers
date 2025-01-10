@@ -22,6 +22,5 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-	rm -f $(NAME)_proc
 
 re: fclean all

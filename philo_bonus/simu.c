@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 00:12:57 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 17:43:50 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/10 12:43:03 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,10 @@ static void	terminate(t_simu *simu, pid_t *pids, char *error, bool kill_pids)
 	int	i;
 
 	i = 0;
-	printf("kill_pids: %d\n", kill_pids);
 	if (kill_pids)
 	{
 		while (i < simu->args.nb_philos)
 		{
-			printf("pid to kill: %d\n", pids[i]);
 			kill(pids[i], SIGKILL);
 			i++;
 		}
@@ -49,6 +47,18 @@ static void	semaphores_init(t_simu *simu)
 	simu->end = sem_open(SIMU_END, O_CREAT, 0600, false);
 }
 
+static void	wait_end(t_simu *simu)
+{
+	int	i;
+
+	i = 0;
+	while (i < simu->args.nb_philos)
+	{
+		sem_wait(simu->end);
+		i++;
+	}
+}
+
 void	simu_start(t_simu *simu)
 {
 	int		i;
@@ -73,14 +83,6 @@ void	simu_start(t_simu *simu)
 		}
 		i++;
 	}
-	i = 0;
-	while (i < nb_philos)
-	{
-		printf("process child wait\n");
-		sem_wait(simu->end);
-		printf("process child end\n");
-		i++;
-	}
-	// TODO: is never call if not died
+	wait_end(simu);
 	terminate(simu, pids, NULL, true);
 }
