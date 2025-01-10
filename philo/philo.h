@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 22:36:23 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/10 13:14:55 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/10 13:31:57 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <string.h> 
-# define LOGS_MODE_PRETTY 0
+# define LOGS_MODE_PRETTY 1
 
 typedef struct s_args
 {

@@ -6,7 +6,7 @@
 /*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 00:06:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/09 15:15:09 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/10 13:31:20 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	await_forks(t_philo *philo)
 		fork_a = philo->fork_right;
 	}
 	pthread_mutex_lock(fork_a);
-	if (!put_state(philo, TAKE_FORK))
+	if (!put_state(philo, TAKE_FORK) || fork_a == fork_b)
 		return (pthread_mutex_unlock(fork_a), 0);
 	pthread_mutex_lock(fork_b);
 	if (!put_state(philo, TAKE_FORK))
