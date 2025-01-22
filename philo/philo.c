@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jvoisard <jvoisard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jvoisard <jonas.voisard@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 00:06:13 by jvoisard          #+#    #+#             */
-/*   Updated: 2025/01/10 13:31:20 by jvoisard         ###   ########.fr       */
+/*   Updated: 2025/01/22 22:06:24 by jvoisard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	await_forks(t_philo *philo)
 	pthread_mutex_t	*fork_a;
 	pthread_mutex_t	*fork_b;
 
-	if (philo->id % 2)
+	if ((philo->id + philo->args.max_times_eat) % 2)
 	{
 		fork_a = &(philo->fork_left);
 		fork_b = philo->fork_right;
